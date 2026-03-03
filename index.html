@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impact Aid Parent Survey — Colorado Military Child Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:        #0d1b2a;
+      --deep-blue:   #162d4c;
+      --mid-blue:    #1e4d82;
+      --blue-light:  #e8f0fb;
+      --purple:      #7b4ea6;
+      --purple-pale: #f2ecfa;
+      --gold:        #c89b3c;
+      --gold-light:  #e8c46a;
+      --cream:       #f8f5ee;
+      --border:      #ddd6cc;
+      --text:        #1a1a2e;
+      --text-2:      #4a5568;
+      --text-muted:  #718096;
+      --success:     #1a7a4a;
+      --success-bg:  #edf7f2;
+      --error:       #c0392b;
+      --error-bg:    #fdf0ee;
+      --warn-bg:     #fff8ec;
+      --warn-border: #c89b3c;
+      --warn-text:   #7a5a10;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); font-size: 16px; line-height: 1.6; min-height: 100vh; }
+
+    .topbar { background: var(--navy); color: rgba(255,255,255,0.7); font-size: 13px; padding: 9px 24px; text-align: center; letter-spacing: 0.03em; }
+    .topbar a { color: var(--gold-light); text-decoration: none; }
+
+    .site-header { background: var(--deep-blue); padding: 18px 32px; display: flex; align-items: center; gap: 16px; box-shadow: 0 2px 20px rgba(0,0,0,0.25); }
+    .header-star { width: 40px; height: 40px; background: var(--purple); clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%); flex-shrink: 0; }
+    .header-text .org { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: #fff; display: block; }
+    .header-text .sub { font-size: 12px; color: var(--gold-light); letter-spacing: 0.1em; text-transform: uppercase; }
+
+    .form-hero { background: var(--navy); background-image: radial-gradient(ellipse at 15% 60%, rgba(123,78,166,0.2) 0%, transparent 55%), radial-gradient(ellipse at 85% 20%, rgba(30,77,130,0.3) 0%, transparent 50%); padding: 48px 32px 44px; position: relative; overflow: hidden; }
+    .form-hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--purple), var(--gold), var(--purple)); }
+    .hero-inner { max-width: 720px; margin: 0 auto; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(123,78,166,0.2); border: 1px solid rgba(123,78,166,0.5); color: #c4a0e8; padding: 5px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+    .form-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(26px, 4vw, 40px); font-weight: 900; color: #fff; line-height: 1.15; margin-bottom: 12px; }
+    .form-hero h1 span { color: var(--gold-light); }
+    .form-hero .hero-sub { font-size: 15px; color: rgba(255,255,255,0.65); max-width: 580px; font-weight: 300; }
+
+    .privacy-bar { background: var(--blue-light); border-bottom: 1px solid #c5d8f5; padding: 12px 32px; font-size: 13px; color: var(--mid-blue); text-align: center; }
+    .privacy-bar strong { font-weight: 700; }
+
+    .page-body { max-width: 780px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    .progress-wrap { margin-bottom: 36px; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+    .progress-track { height: 6px; background: var(--border); border-radius: 100px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--mid-blue)); border-radius: 100px; transition: width 0.4s ease; width: 0%; }
+    .step-dots { display: flex; gap: 8px; margin-top: 10px; justify-content: center; }
+    .step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: all 0.3s; }
+    .step-dot.active { background: var(--purple); transform: scale(1.3); }
+    .step-dot.done { background: var(--mid-blue); }
+
+    .form-section { display: none; animation: slideIn 0.35s ease both; }
+    .form-section.active { display: block; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+    .section-header { margin-bottom: 28px; }
+    .section-number { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); margin-bottom: 6px; }
+    .section-header h2 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .section-header p { font-size: 14px; color: var(--text-2); font-weight: 300; }
+
+    .field-group { margin-bottom: 20px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .field-row, .field-row-3 { grid-template-columns: 1fr; } }
+
+    label { display: block; font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 7px; }
+    label .req { color: var(--purple); margin-left: 3px; }
+    label .hint { font-size: 12px; font-weight: 400; color: var(--text-muted); margin-left: 6px; }
+
+    input[type="text"], input[type="email"], input[type="tel"], input[type="date"], select, textarea {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s; appearance: none; -webkit-appearance: none;
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--purple); box-shadow: 0 0 0 3px rgba(123,78,166,0.12); }
+    input.error, select.error { border-color: var(--error); background: var(--error-bg); }
+    .error-msg { font-size: 12px; color: var(--error); margin-top: 5px; display: none; }
+    .error-msg.visible { display: block; }
+
+    .select-wrap { position: relative; }
+    .select-wrap::after { content: '▾'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; font-size: 13px; }
+    .select-wrap select { padding-right: 36px; cursor: pointer; }
+
+    .radio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+    .radio-card { position: relative; }
+    .radio-card input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .radio-card label { display: flex; align-items: flex-start; gap: 10px; padding: 13px 15px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.2s; background: #fff; font-weight: 400; font-size: 14px; color: var(--text); margin: 0; }
+    .radio-card label:hover { border-color: var(--purple); background: var(--purple-pale); }
+    .radio-card input:checked + label { border-color: var(--purple); background: var(--purple-pale); font-weight: 600; }
+    .rc-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; margin-top: 1px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+    .radio-card input:checked + label .rc-dot { border-color: var(--purple); background: var(--purple); }
+    .radio-card input:checked + label .rc-dot::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #fff; }
+
+    .check-card { position: relative; }
+    .check-card input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .check-card label { display: flex; align-items: flex-start; gap: 10px; padding: 13px 15px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.2s; background: #fff; font-weight: 400; font-size: 14px; color: var(--text); margin: 0; }
+    .check-card label:hover { border-color: var(--mid-blue); background: var(--blue-light); }
+    .check-card input:checked + label { border-color: var(--mid-blue); background: var(--blue-light); font-weight: 600; }
+    .check-box { width: 18px; height: 18px; border-radius: 4px; border: 2px solid var(--border); flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .check-card input:checked + label .check-box { border-color: var(--mid-blue); background: var(--mid-blue); }
+    .check-card input:checked + label .check-box::after { content: '✓'; color: #fff; font-size: 11px; font-weight: 700; }
+
+    .info-box { background: var(--blue-light); border: 1px solid #c5d8f5; border-radius: 8px; padding: 13px 16px; font-size: 13px; color: var(--mid-blue); margin-top: 10px; line-height: 1.6; }
+    .info-box strong { font-weight: 700; }
+    .warn-box { background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--warn-text); margin-bottom: 20px; line-height: 1.7; }
+    .warn-box strong { font-weight: 700; display: block; margin-bottom: 4px; }
+
+    .conditional { display: none; }
+    .conditional.shown { display: block; }
+    .conditional-group { display: none; }
+    .conditional-group.shown { display: block; }
+
+    .subsection-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid-blue); margin: 24px 0 14px; padding-bottom: 6px; border-bottom: 1px solid #c5d8f5; }
+
+    .cert-block { background: var(--navy); border-radius: 12px; padding: 24px 28px; color: rgba(255,255,255,0.85); font-size: 14px; line-height: 1.8; margin-bottom: 24px; }
+    .cert-block h3 { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--gold-light); margin-bottom: 12px; }
+
+    .sig-field { background: #fff; border: 2px dashed var(--border); border-radius: 8px; padding: 16px 18px; display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+    .sig-field input { border: none; border-bottom: 2px solid var(--border); border-radius: 0; padding: 4px 8px; flex: 1; font-family: 'Playfair Display', serif; font-size: 20px; font-style: italic; }
+    .sig-field input:focus { outline: none; box-shadow: none; border-bottom-color: var(--purple); }
+    .sig-label { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+
+    .review-box { background: var(--blue-light); border: 1px solid #c5d8f5; border-radius: 10px; padding: 18px 22px; margin-bottom: 24px; font-size: 14px; }
+    .review-box .rev-title { font-size: 11px; font-weight: 700; color: var(--mid-blue); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+    .review-box .rev-row { display: flex; gap: 8px; padding: 4px 0; border-bottom: 1px solid rgba(30,77,130,0.1); }
+    .review-box .rev-row:last-child { border-bottom: none; }
+    .review-box .rev-key { font-weight: 600; color: var(--navy); min-width: 160px; font-size: 13px; }
+    .review-box .rev-val { color: var(--text-2); font-size: 13px; }
+
+    .form-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 36px; gap: 16px; }
+    .btn-back { background: transparent; border: 1.5px solid var(--border); color: var(--text-2); padding: 11px 22px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-back:hover { border-color: var(--text-2); color: var(--navy); }
+    .btn-next, .btn-submit { background: var(--purple); color: #fff; border: none; padding: 12px 28px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+    .btn-next:hover { background: #6a3d94; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(123,78,166,0.3); }
+    .btn-submit { background: var(--mid-blue); }
+    .btn-submit:hover { background: var(--deep-blue); transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-spacer { flex: 1; }
+
+    #success-screen { display: none; text-align: center; padding: 60px 24px; }
+    #success-screen.visible { display: block; animation: slideIn 0.4s ease; }
+    .success-icon { width: 80px; height: 80px; background: var(--success-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 36px; }
+    #success-screen h2 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--navy); margin-bottom: 12px; }
+    #success-screen p { font-size: 15px; color: var(--text-2); max-width: 480px; margin: 0 auto 28px; font-weight: 300; }
+    .conf-box { background: var(--success-bg); border: 1px solid #a3d9be; border-radius: 10px; padding: 18px 24px; display: inline-block; text-align: left; margin-bottom: 24px; }
+    .conf-label { font-size: 12px; color: var(--success); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+    .conf-id { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy); font-weight: 700; }
+
+    .section-divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+    .form-footer { text-align: center; padding: 28px 24px; background: var(--navy); color: rgba(255,255,255,0.5); font-size: 13px; }
+    .form-footer a { color: var(--gold-light); text-decoration: none; }
+
+    .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
+    .spinner.visible { display: block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  🪖 Colorado Military Child Hub &nbsp;·&nbsp; Aurora Metro Chamber of Commerce &nbsp;·&nbsp;
+  <a href="mailto:rdevall@aurorachamber.org">rdevall@aurorachamber.org</a> &nbsp;·&nbsp; 
+</div>
+
+<div class="site-header">
+  <div class="header-star"></div>
+  <div class="header-text">
+    <span class="org">Colorado Military Child Hub</span>
+    <span class="sub">Aurora Chamber · Military Affairs</span>
+  </div>
+</div>
+
+<div class="form-hero">
+  <div class="hero-inner">
+    <div class="hero-badge">★ Annual Federal Survey · 34 CFR 222.35</div>
+    <h1>Impact Aid<br><span>Parent Survey</span></h1>
+    <p class="hero-sub">This survey determines federal Impact Aid funding for your child's school. Completing it takes approximately 5 minutes. Your response is voluntary and confidential.</p>
+  </div>
+</div>
+
+<div class="privacy-bar">
+  🔒 <strong>Your privacy is protected.</strong> Data is collected by the Aurora Chamber as an authorized processor for your district, used solely to calculate Impact Aid funding under 20 U.S.C. § 7701. Never shared with immigration authorities.
+</div>
+
+<div class="page-body">
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="step-label">Step 1 of 5 — Student Information</span>
+      <span id="step-pct">20%</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="step-dots">
+      <div class="step-dot active" id="dot-1"></div>
+      <div class="step-dot" id="dot-2"></div>
+      <div class="step-dot" id="dot-3"></div>
+      <div class="step-dot" id="dot-4"></div>
+      <div class="step-dot" id="dot-5"></div>
+    </div>
+  </div>
+
+  <form id="survey-form" novalidate>
+
+    <!-- ══════════════════════════════════
+         STEP 1: STUDENT INFORMATION
+    ══════════════════════════════════ -->
+    <div class="form-section active" id="step-1">
+      <div class="section-header">
+        <div class="section-number">Step 1 of 5</div>
+        <h2>Student Information</h2>
+        <p>Please provide information for the student being counted in the Impact Aid survey. Submit a separate form for each child if they attend different schools.</p>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label for="student-first">Student First Name <span class="req">*</span></label>
+          <input type="text" id="student-first" name="studentFirst" placeholder="First name" required>
+          <div class="error-msg" id="err-student-first">Required.</div>
+        </div>
+        <div class="field-group">
+          <label for="student-last">Student Last Name <span class="req">*</span></label>
+          <input type="text" id="student-last" name="studentLast" placeholder="Last name" required>
+          <div class="error-msg" id="err-student-last">Required.</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label for="student-dob">Date of Birth <span class="req">*</span></label>
+          <input type="date" id="student-dob" name="studentDob" required>
+          <div class="error-msg" id="err-student-dob">Required.</div>
+        </div>
+        <div class="field-group">
+          <label for="student-grade">Grade Level <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select id="student-grade" name="studentGrade" required>
+              <option value="">Select grade…</option>
+              <option>Pre-K</option>
+              <option>Kindergarten</option>
+              <option>1st Grade</option><option>2nd Grade</option><option>3rd Grade</option>
+              <option>4th Grade</option><option>5th Grade</option><option>6th Grade</option>
+              <option>7th Grade</option><option>8th Grade</option><option>9th Grade</option>
+              <option>10th Grade</option><option>11th Grade</option><option>12th Grade</option>
+            </select>
+          </div>
+          <div class="error-msg" id="err-student-grade">Required.</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label for="school-year">School Year <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select id="school-year" name="schoolYear" required>
+              <option value="">Select…</option>
+              <option>2025–2026</option>
+              <option>2026–2027</option>
+            </select>
+          </div>
+          <div class="error-msg" id="err-school-year">Required.</div>
+        </div>
+        <div class="field-group">
+          <label for="survey-date">Survey Date <span class="req">*</span></label>
+          <input type="date" id="survey-date" name="surveyDate" required>
+          <div class="error-msg" id="err-survey-date">Required.</div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label for="district">School District <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="district" name="district" required onchange="handleDistrictChange(this)">
+            <option value="">Select your district…</option>
+            <optgroup label="Aurora / Metro Denver">
+              <option value="Aurora Public Schools (APS)">Aurora Public Schools (APS)</option>
+              <option value="Cherry Creek School District">Cherry Creek School District</option>
+              <option value="Douglas County School District">Douglas County School District</option>
+              <option value="Littleton Public Schools">Littleton Public Schools</option>
+              <option value="Denver Public Schools">Denver Public Schools</option>
+            </optgroup>
+            <optgroup label="Colorado Springs Area">
+              <option value="Academy School District 20 (D20)">Academy School District 20 (D20)</option>
+              <option value="Colorado Springs School District 11 (D11)">Colorado Springs School District 11 (D11)</option>
+              <option value="Fountain-Fort Carson School District 8">Fountain-Fort Carson School District 8</option>
+              <option value="Ellicott School District 22">Ellicott School District 22</option>
+              <option value="Harrison School District 2">Harrison School District 2</option>
+              <option value="Widefield School District 3">Widefield School District 3</option>
+              <option value="Peyton School District 23-JT">Peyton School District 23-JT</option>
+              <option value="Calhan School District RJ-1">Calhan School District RJ-1</option>
+              <option value="Lewis-Palmer School District 38">Lewis-Palmer School District 38</option>
+            </optgroup>
+            <optgroup label="Northern Colorado">
+              <option value="Poudre School District (Fort Collins)">Poudre School District (Fort Collins)</option>
+              <option value="Thompson School District R2-J (Loveland)">Thompson School District R2-J (Loveland)</option>
+              <option value="Greeley-Evans School District 6">Greeley-Evans School District 6</option>
+            </optgroup>
+            <optgroup label="Other">
+              <option value="other">Other / Not listed…</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="error-msg" id="err-district">Required.</div>
+      </div>
+
+      <div class="conditional field-group" id="district-other-wrap">
+        <label for="district-other">District Name <span class="req">*</span></label>
+        <input type="text" id="district-other" name="districtOther" placeholder="Enter full district name">
+        <div class="error-msg" id="err-district-other">Required.</div>
+      </div>
+
+      <div class="field-group">
+        <label for="school-name">School Name <span class="req">*</span></label>
+        <input type="text" id="school-name" name="schoolName" placeholder="Specific school your child attends" required>
+        <div class="error-msg" id="err-school-name">Required.</div>
+      </div>
+
+      <!-- Residential Address -->
+      <div class="subsection-label">Student's Residential Address</div>
+      <div class="info-box" style="margin-bottom:16px; font-size:13px;">
+        <strong>Note:</strong> P.O. Boxes are not accepted per 34 CFR 222.35. Please provide a physical street address.
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label for="addr-street">Street Address <span class="req">*</span></label>
+          <input type="text" id="addr-street" name="addrStreet" placeholder="123 Main St" required>
+          <div class="error-msg" id="err-addr-street">Required. No P.O. Boxes.</div>
+        </div>
+        <div class="field-group">
+          <label for="addr-unit">Unit / Apt / BOQ <span class="hint">(if applicable)</span></label>
+          <input type="text" id="addr-unit" name="addrUnit" placeholder="Apt 4B or Building 1234">
+        </div>
+      </div>
+
+      <div class="field-row-3">
+        <div class="field-group">
+          <label for="addr-city">City <span class="req">*</span></label>
+          <input type="text" id="addr-city" name="addrCity" placeholder="Colorado Springs" required>
+          <div class="error-msg" id="err-addr-city">Required.</div>
+        </div>
+        <div class="field-group">
+          <label for="addr-state">State <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select id="addr-state" name="addrState" required>
+              <option value="">State…</option>
+              <option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option>
+              <option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option>
+              <option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option>
+              <option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+              <option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option>
+              <option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option>
+              <option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option>
+              <option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+              <option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option>
+              <option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option>
+              <option>DC</option>
+            </select>
+          </div>
+          <div class="error-msg" id="err-addr-state">Required.</div>
+        </div>
+        <div class="field-group">
+          <label for="addr-zip">ZIP Code <span class="req">*</span></label>
+          <input type="text" id="addr-zip" name="addrZip" placeholder="80903" maxlength="10" required>
+          <div class="error-msg" id="err-addr-zip">Required.</div>
+        </div>
+      </div>
+
+      <!-- Federal Property -->
+      <div class="field-group" style="margin-top:8px;">
+        <label>Does the student reside on federal property (e.g., a military installation)? <span class="req">*</span></label>
+        <div class="radio-grid">
+          <div class="radio-card">
+            <input type="radio" name="federalProperty" id="fp-yes" value="Yes" onchange="handleFederalPropertyChange()" required>
+            <label for="fp-yes"><div class="rc-dot"></div>Yes — resides on federal property</label>
+          </div>
+          <div class="radio-card">
+            <input type="radio" name="federalProperty" id="fp-no" value="No" onchange="handleFederalPropertyChange()">
+            <label for="fp-no"><div class="rc-dot"></div>No — resides off base</label>
+          </div>
+        </div>
+        <div class="error-msg" id="err-federal-property">Required.</div>
+      </div>
+
+      <div class="conditional field-group" id="federal-property-name-wrap">
+        <label for="federal-property-name">Name of Federal Property / Installation <span class="req">*</span></label>
+        <input type="text" id="federal-property-name" name="federalPropertyName" placeholder="e.g. Fort Carson, Peterson SFB, Buckley SFB">
+        <div class="error-msg" id="err-federal-property-name">Required.</div>
+      </div>
+
+      <div class="form-nav">
+        <div class="btn-spacer"></div>
+        <button type="button" class="btn-next" onclick="nextStep(1)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         STEP 2: PARENT / GUARDIAN
+    ══════════════════════════════════ -->
+    <div class="form-section" id="step-2">
+      <div class="section-header">
+        <div class="section-number">Step 2 of 5</div>
+        <h2>Parent or Guardian Information</h2>
+        <p>Information about the parent or guardian submitting this survey.</p>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label for="parent-first">First Name <span class="req">*</span></label>
+          <input type="text" id="parent-first" name="parentFirst" placeholder="First name" required>
+          <div class="error-msg" id="err-parent-first">Required.</div>
+        </div>
+        <div class="field-group">
+          <label for="parent-last">Last Name <span class="req">*</span></label>
+          <input type="text" id="parent-last" name="parentLast" placeholder="Last name" required>
+          <div class="error-msg" id="err-parent-last">Required.</div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label for="relationship">Relationship to Student <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="relationship" name="relationship" required>
+            <option value="">Select…</option>
+            <option>Parent</option>
+            <option>Legal Guardian</option>
+            <option>Foster Parent</option>
+            <option>Grandparent / Other Family Member</option>
+          </select>
+        </div>
+        <div class="error-msg" id="err-relationship">Required.</div>
+      </div>
+
+      <div class="field-group">
+        <label for="parent-email">Email Address <span class="req">*</span></label>
+        <input type="email" id="parent-email" name="parentEmail" placeholder="your@email.com">
+        <div class="error-msg" id="err-parent-email">Please enter a valid email.</div>
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn-back" onclick="prevStep(2)">← Back</button>
+        <button type="button" class="btn-next" onclick="nextStep(2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         STEP 3: MILITARY / FEDERAL STATUS
+    ══════════════════════════════════ -->
+    <div class="form-section" id="step-3">
+      <div class="section-header">
+        <div class="section-number">Step 3 of 5</div>
+        <h2>Military &amp; Federal Status</h2>
+        <p>Select the category that applies to the parent or guardian in this household. If more than one applies, select the primary one.</p>
+      </div>
+
+      <!-- Guard/Reserve callout -->
+      <div class="warn-box">
+        <strong>⚠️ National Guard / Reserve Members</strong>
+        Guard and Reserve families qualify for Impact Aid only while serving on federal orders (Title 10 active duty) as of the survey date, and documentation of orders is required. If this applies to you, please contact us directly and we will assist you with a paper survey form.<br><br>
+        📞 &nbsp;·&nbsp; ✉️ <a href="mailto:rdevall@aurorachamber.org" style="color:var(--warn-text); font-weight:600;">rdevall@aurorachamber.org</a>
+      </div>
+
+      <div class="field-group">
+        <label>Service / Employment Status <span class="req">*</span></label>
+        <div class="radio-grid" style="grid-template-columns: 1fr;">
+          <div class="radio-card">
+            <input type="radio" name="militaryStatus" id="ms-active" value="Active Duty" onchange="handleStatusChange()" required>
+            <label for="ms-active"><div class="rc-dot"></div><div><strong>Active Duty</strong><br><span style="font-size:13px;color:var(--text-2);font-weight:400;">Full-time service member — Army, Navy, Air Force, Marine Corps, Space Force, or Coast Guard</span></div></label>
+          </div>
+          <div class="radio-card">
+            <input type="radio" name="militaryStatus" id="ms-dod" value="DoD Civilian Employee" onchange="handleStatusChange()">
+            <label for="ms-dod"><div class="rc-dot"></div><div><strong>DoD Civilian Employee</strong><br><span style="font-size:13px;color:var(--text-2);font-weight:400;">Civilian employee of the Department of Defense</span></div></label>
+          </div>
+          <div class="radio-card">
+            <input type="radio" name="militaryStatus" id="ms-federal" value="Federal Civilian Employee (non-DoD)" onchange="handleStatusChange()">
+            <label for="ms-federal"><div class="rc-dot"></div><div><strong>Federal Civilian Employee (non-DoD)</strong><br><span style="font-size:13px;color:var(--text-2);font-weight:400;">Employee of any other federal agency (VA, DHS, USPS, etc.)</span></div></label>
+          </div>
+          <div class="radio-card">
+            <input type="radio" name="militaryStatus" id="ms-foreign" value="Foreign Military Officer / Government Official" onchange="handleStatusChange()">
+            <label for="ms-foreign"><div class="rc-dot"></div><div><strong>Foreign Military Officer / Government Official</strong><br><span style="font-size:13px;color:var(--text-2);font-weight:400;">Allied nation military officer or government official assigned to a U.S. installation (e.g. Buckley SFB liaison)</span></div></label>
+          </div>
+          <div class="radio-card">
+            <input type="radio" name="militaryStatus" id="ms-surviving" value="Surviving Dependent" onchange="handleStatusChange()">
+            <label for="ms-surviving"><div class="rc-dot"></div><div><strong>Surviving Dependent</strong><br><span style="font-size:13px;color:var(--text-2);font-weight:400;">Child of a servicemember who died on active duty</span></div></label>
+          </div>
+        </div>
+        <div class="error-msg" id="err-military-status">Required.</div>
+      </div>
+
+      <!-- ACTIVE DUTY FIELDS -->
+      <div class="conditional-group" id="active-duty-fields">
+        <div class="subsection-label">Active Duty Service Member Details</div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="active-parent-last">Servicemember Last Name <span class="req">*</span></label>
+            <input type="text" id="active-parent-last" name="activeParentLast" placeholder="Last name">
+            <div class="error-msg" id="err-active-parent-last">Required.</div>
+          </div>
+          <div class="field-group">
+            <label for="active-parent-first">First Name <span class="req">*</span></label>
+            <input type="text" id="active-parent-first" name="activeParentFirst" placeholder="First name">
+            <div class="error-msg" id="err-active-parent-first">Required.</div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="service-branch">Branch of Service <span class="req">*</span></label>
+            <div class="select-wrap">
+              <select id="service-branch" name="serviceBranch">
+                <option value="">Select branch…</option>
+                <option>Army</option><option>Navy</option><option>Air Force</option>
+                <option>Marine Corps</option><option>Space Force</option><option>Coast Guard</option>
+              </select>
+            </div>
+            <div class="error-msg" id="err-service-branch">Required.</div>
+          </div>
+          <div class="field-group">
+            <label for="pay-grade">Pay Grade / Rank <span class="req">*</span></label>
+            <div class="select-wrap">
+              <select id="pay-grade" name="payGrade">
+                <option value="">Select grade…</option>
+                <optgroup label="Enlisted">
+                  <option>E-1</option><option>E-2</option><option>E-3</option><option>E-4</option>
+                  <option>E-5</option><option>E-6</option><option>E-7</option><option>E-8</option><option>E-9</option>
+                </optgroup>
+                <optgroup label="Warrant Officer">
+                  <option>W-1</option><option>W-2</option><option>W-3</option><option>W-4</option><option>W-5</option>
+                </optgroup>
+                <optgroup label="Officer">
+                  <option>O-1</option><option>O-2</option><option>O-3</option><option>O-4</option>
+                  <option>O-5</option><option>O-6</option><option>O-7</option><option>O-8</option>
+                  <option>O-9</option><option>O-10</option>
+                </optgroup>
+                <optgroup label="Special">
+                  <option>O-1E</option><option>O-2E</option><option>O-3E</option>
+                  <option>W-1 (CW2 equivalent)</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="error-msg" id="err-pay-grade">Required.</div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="mos">MOS / AFSC / Rate / Designator <span class="req">*</span> <span class="hint">(e.g. 11B, 13S, 68W, 6F0X1, BM, 1310)</span></label>
+          <input type="text" id="mos" name="mos" placeholder="Enter your MOS, AFSC, rate, or designator">
+          <div class="error-msg" id="err-mos">Required.</div>
+        </div>
+      </div>
+
+      <!-- CIVILIAN EMPLOYEE FIELDS -->
+      <div class="conditional-group" id="civilian-fields">
+        <div class="subsection-label">Federal Employment Details</div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="civilian-parent-last">Last Name <span class="req">*</span></label>
+            <input type="text" id="civilian-parent-last" name="civilianParentLast" placeholder="Last name">
+            <div class="error-msg" id="err-civilian-parent-last">Required.</div>
+          </div>
+          <div class="field-group">
+            <label for="civilian-parent-first">First Name <span class="req">*</span></label>
+            <input type="text" id="civilian-parent-first" name="civilianParentFirst" placeholder="First name">
+            <div class="error-msg" id="err-civilian-parent-first">Required.</div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="federal-agency">Federal Agency / Employer <span class="req">*</span></label>
+          <input type="text" id="federal-agency" name="federalAgency" placeholder="e.g. Department of Veterans Affairs, USAF (civilian)">
+          <div class="error-msg" id="err-federal-agency">Required.</div>
+        </div>
+        <div class="field-group">
+          <label for="work-property-name">Name of Federal Property Where Parent Works <span class="req">*</span></label>
+          <input type="text" id="work-property-name" name="workPropertyName" placeholder="e.g. Fort Carson, Peterson SFB, VA Medical Center">
+          <div class="error-msg" id="err-work-property-name">Required.</div>
+        </div>
+        <div class="subsection-label" style="margin-top:16px;">Address of Federal Work Location</div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="work-addr-street">Street Address <span class="req">*</span></label>
+            <input type="text" id="work-addr-street" name="workAddrStreet" placeholder="1234 Installation Rd">
+            <div class="error-msg" id="err-work-addr-street">Required.</div>
+          </div>
+          <div class="field-group">
+            <label for="work-addr-unit">Unit / Bldg <span class="hint">(if applicable)</span></label>
+            <input type="text" id="work-addr-unit" name="workAddrUnit" placeholder="Bldg 1500">
+          </div>
+        </div>
+        <div class="field-row-3">
+          <div class="field-group">
+            <label for="work-addr-city">City <span class="req">*</span></label>
+            <input type="text" id="work-addr-city" name="workAddrCity" placeholder="Colorado Springs">
+            <div class="error-msg" id="err-work-addr-city">Required.</div>
+          </div>
+          <div class="field-group">
+            <label for="work-addr-state">State <span class="req">*</span></label>
+            <div class="select-wrap">
+              <select id="work-addr-state" name="workAddrState">
+                <option value="">State…</option>
+                <option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option>
+                <option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option>
+                <option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option>
+                <option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+                <option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option>
+                <option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option>
+                <option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option>
+                <option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+                <option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option>
+                <option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option>
+                <option>DC</option>
+              </select>
+            </div>
+            <div class="error-msg" id="err-work-addr-state">Required.</div>
+          </div>
+          <div class="field-group">
+            <label for="work-addr-zip">ZIP <span class="req">*</span></label>
+            <input type="text" id="work-addr-zip" name="workAddrZip" placeholder="80913" maxlength="10">
+            <div class="error-msg" id="err-work-addr-zip">Required.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SURVIVING DEPENDENT FIELDS -->
+      <div class="conditional-group" id="surviving-fields">
+        <div class="subsection-label">Surviving Dependent Information</div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="surviving-parent-last">Last Name of Deceased Servicemember <span class="req">*</span></label>
+            <input type="text" id="surviving-parent-last" name="survivingParentLast" placeholder="Last name">
+            <div class="error-msg" id="err-surviving-parent-last">Required.</div>
+          </div>
+          <div class="field-group">
+            <label for="surviving-parent-first">First Name <span class="req">*</span></label>
+            <input type="text" id="surviving-parent-first" name="survivingParentFirst" placeholder="First name">
+            <div class="error-msg" id="err-surviving-parent-first">Required.</div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="surviving-branch">Branch of Service <span class="req">*</span></label>
+            <div class="select-wrap">
+              <select id="surviving-branch" name="survivingBranch">
+                <option value="">Select…</option>
+                <option>Army</option><option>Navy</option><option>Air Force</option>
+                <option>Marine Corps</option><option>Space Force</option><option>Coast Guard</option>
+              </select>
+            </div>
+            <div class="error-msg" id="err-surviving-branch">Required.</div>
+          </div>
+          <div class="field-group">
+            <label for="surviving-grade">Pay Grade at Time of Death <span class="req">*</span></label>
+            <div class="select-wrap">
+              <select id="surviving-grade" name="survivingGrade">
+                <option value="">Select…</option>
+                <optgroup label="Enlisted"><option>E-1</option><option>E-2</option><option>E-3</option><option>E-4</option><option>E-5</option><option>E-6</option><option>E-7</option><option>E-8</option><option>E-9</option></optgroup>
+                <optgroup label="Warrant Officer"><option>W-1</option><option>W-2</option><option>W-3</option><option>W-4</option><option>W-5</option></optgroup>
+                <optgroup label="Officer"><option>O-1</option><option>O-2</option><option>O-3</option><option>O-4</option><option>O-5</option><option>O-6</option><option>O-7</option><option>O-8</option><option>O-9</option><option>O-10</option></optgroup>
+              </select>
+            </div>
+            <div class="error-msg" id="err-surviving-grade">Required.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOREIGN MILITARY OFFICER FIELDS -->
+      <div class="conditional-group" id="foreign-military-fields">
+        <div class="subsection-label">Foreign Military Officer / Government Official Details</div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="foreign-parent-last">Last Name <span class="req">*</span></label>
+            <input type="text" id="foreign-parent-last" name="foreignParentLast" placeholder="Last name">
+            <div class="error-msg" id="err-foreign-parent-last">Required.</div>
+          </div>
+          <div class="field-group">
+            <label for="foreign-parent-first">First Name <span class="req">*</span></label>
+            <input type="text" id="foreign-parent-first" name="foreignParentFirst" placeholder="First name">
+            <div class="error-msg" id="err-foreign-parent-first">Required.</div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="foreign-rank">Rank <span class="req">*</span></label>
+            <input type="text" id="foreign-rank" name="foreignRank" placeholder="e.g. Major, Wing Commander, Lt Colonel">
+            <div class="error-msg" id="err-foreign-rank">Required.</div>
+          </div>
+          <div class="field-group">
+            <label for="foreign-country">Country of Service <span class="req">*</span></label>
+            <input type="text" id="foreign-country" name="foreignCountry" placeholder="e.g. United Kingdom, Australia, Canada">
+            <div class="error-msg" id="err-foreign-country">Required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn-back" onclick="prevStep(3)">← Back</button>
+        <button type="button" class="btn-next" onclick="nextStep(3)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         STEP 4: REVIEW
+    ══════════════════════════════════ -->
+    <div class="form-section" id="step-4">
+      <div class="section-header">
+        <div class="section-number">Step 4 of 5</div>
+        <h2>Review Your Information</h2>
+        <p>Please review everything below before signing. If anything is incorrect, go back and correct it.</p>
+      </div>
+
+      <div class="review-box" id="review-box">
+        <div class="rev-title">Summary</div>
+        <div id="review-content"></div>
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn-back" onclick="prevStep(4)">← Back</button>
+        <button type="button" class="btn-next" onclick="nextStep(4)">Looks correct →</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         STEP 5: CERTIFICATION & SIGNATURE
+    ══════════════════════════════════ -->
+    <div class="form-section" id="step-5">
+      <div class="section-header">
+        <div class="section-number">Step 5 of 5</div>
+        <h2>Certification &amp; Signature</h2>
+        <p>Read the certification statement carefully and sign below.</p>
+      </div>
+
+      <div class="cert-block">
+        <h3>Certification Statement</h3>
+        I certify that the information provided in this survey is true and accurate to the best of my knowledge. I understand that this information will be used by my child's school district to apply for federal Impact Aid funding under the Elementary and Secondary Education Act (20 U.S.C. § 7701 et seq.) and 34 CFR 222.35. I understand that this survey is voluntary and that my response is confidential. I understand that knowingly providing false information may constitute a federal violation and may affect the district's federal funding.
+      </div>
+
+      <div class="field-group">
+        <label>Electronic Signature <span class="req">*</span></label>
+        <div class="sig-field">
+          <div class="sig-label">Sign here →</div>
+          <input type="text" id="signature" name="signature" placeholder="Type your full legal name" required autocomplete="name">
+        </div>
+        <div class="error-msg" id="err-signature">Please type your full legal name as your signature.</div>
+        <div class="info-box" style="margin-top:10px; font-size:12px;">By typing your name, you are providing an electronic signature legally equivalent to a handwritten signature under the Electronic Signatures in Global and National Commerce Act (E-SIGN) and Colorado law.</div>
+      </div>
+
+      <div class="field-group">
+        <label for="sig-date">Date <span class="req">*</span></label>
+        <input type="date" id="sig-date" name="sigDate" required>
+        <div class="error-msg" id="err-sig-date">Required.</div>
+      </div>
+
+      <hr class="section-divider">
+
+      <div class="field-group">
+        <div class="check-card">
+          <input type="checkbox" id="consent-confirm" name="consentConfirm" required>
+          <label for="consent-confirm">
+            <div class="check-box"></div>
+            <div>I confirm the information above is accurate and I consent to this data being processed by the Aurora Metro Chamber of Commerce as an authorized data processor for my school district, solely for Impact Aid funding calculation under 20 U.S.C. § 7701.</div>
+          </label>
+        </div>
+        <div class="error-msg" id="err-consent">You must check this box to submit.</div>
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn-back" onclick="prevStep(5)">← Back</button>
+        <button type="submit" class="btn-submit" id="submit-btn">
+          <span id="submit-text">Submit Survey</span>
+          <div class="spinner" id="submit-spinner"></div>
+        </button>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- SUCCESS -->
+  <div id="success-screen">
+    <div class="success-icon">✅</div>
+    <h2>Survey Submitted!</h2>
+    <p>Thank you. Your Impact Aid Survey has been recorded and will be submitted to your school district's Impact Aid coordinator.</p>
+    <div class="conf-box">
+      <div class="conf-label">Confirmation ID</div>
+      <div class="conf-id" id="conf-id">—</div>
+    </div>
+    <p style="font-size:14px; color:var(--text-muted);">
+      If you provided an email address, a confirmation copy will be sent to you.<br>
+      If you have children at other schools, please <a href="#" onclick="location.reload(); return false;" style="color:var(--purple); font-weight:600;">submit another form</a>.
+    </p>
+    <br>
+    <p style="font-size:13px; color:var(--text-muted);">
+      Questions? <a href="mailto:rdevall@aurorachamber.org" style="color:var(--mid-blue);">rdevall@aurorachamber.org</a>
+    </p>
+  </div>
+
+</div>
+
+<div class="form-footer">
+  <p>Colorado Military Child Hub · Aurora Metro Chamber of Commerce · Military Affairs Division</p>
+  <p style="margin-top:6px;"><a href="mailto:rdevall@aurorachamber.org">rdevall@aurorachamber.org</a> · <a href="https://www.aurorachamber.org">aurorachamber.org</a></p>
+  <p style="margin-top:10px; font-size:11px; color:rgba(255,255,255,0.3);">Impact Aid Survey data collected and processed per executed Data Use Agreement between the Aurora Metro Chamber and your school district. FERPA-compliant. Used solely for 20 U.S.C. § 7701 Impact Aid funding calculation per 34 CFR 222.35.</p>
+</div>
+
+<script>
+  const APPS_SCRIPT_URL = 'https://default8a4abf595b8047ca9443ea1e499fdb.b8.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/1385782fccdc42a98501c3dea10b435c/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=0H524P20JW3C7TAVer8Dmwl5P__YuJ-AzyCtGet9reM';
+  const TOTAL_STEPS = 5;
+  let currentStep = 1;
+
+  const STEP_LABELS = [
+    'Step 1 of 5 — Student Information',
+    'Step 2 of 5 — Parent / Guardian',
+    'Step 3 of 5 — Military & Federal Status',
+    'Step 4 of 5 — Review',
+    'Step 5 of 5 — Certification & Signature',
+  ];
+
+  function updateProgress(step) {
+    const pct = Math.round((step / TOTAL_STEPS) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('step-label').textContent = STEP_LABELS[step - 1];
+    document.getElementById('step-pct').textContent = pct + '%';
+    for (let i = 1; i <= TOTAL_STEPS; i++) {
+      const dot = document.getElementById('dot-' + i);
+      dot.className = 'step-dot' + (i < step ? ' done' : i === step ? ' active' : '');
+    }
+  }
+
+  function nextStep(from) {
+    if (!validateStep(from)) return;
+    if (from === 3) buildReview();
+    document.getElementById('step-' + from).classList.remove('active');
+    currentStep = from + 1;
+    document.getElementById('step-' + currentStep).classList.add('active');
+    updateProgress(currentStep);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function prevStep(from) {
+    document.getElementById('step-' + from).classList.remove('active');
+    currentStep = from - 1;
+    document.getElementById('step-' + currentStep).classList.add('active');
+    updateProgress(currentStep);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── CONDITIONAL VISIBILITY ─────────────────────────
+  function handleDistrictChange(sel) {
+    document.getElementById('district-other-wrap').classList.toggle('shown', sel.value === 'other');
+  }
+
+  function handleFederalPropertyChange() {
+    const val = document.querySelector('input[name="federalProperty"]:checked')?.value;
+    document.getElementById('federal-property-name-wrap').classList.toggle('shown', val === 'Yes');
+  }
+
+  function handleStatusChange() {
+    const val = document.querySelector('input[name="militaryStatus"]:checked')?.value || '';
+    document.getElementById('active-duty-fields').classList.toggle('shown', val === 'Active Duty');
+    document.getElementById('civilian-fields').classList.toggle('shown', ['DoD Civilian Employee','Federal Civilian Employee (non-DoD)'].includes(val));
+    document.getElementById('surviving-fields').classList.toggle('shown', val === 'Surviving Dependent');
+    document.getElementById('foreign-military-fields').classList.toggle('shown', val === 'Foreign Military Officer / Government Official');
+  }
+
+  // ── VALIDATION ─────────────────────────────────────
+  function v(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+  function se(inputId, msgId, show) {
+    const el = document.getElementById(inputId);
+    const msg = document.getElementById(msgId);
+    if (el) el.classList.toggle('error', show);
+    if (msg) msg.classList.toggle('visible', show);
+  }
+
+  function validateStep(step) {
+    let ok = true;
+
+    if (step === 1) {
+      ['student-first','student-last','student-dob','student-grade','school-year','survey-date','school-name','addr-street','addr-city','addr-zip'].forEach(id => {
+        const valid = !!v(id);
+        se(id, 'err-' + id, !valid);
+        if (!valid) ok = false;
+      });
+      if (!v('addr-state')) { se('addr-state','err-addr-state',true); ok=false; } else se('addr-state','err-addr-state',false);
+      const di = v('district');
+      if (!di) { se('district','err-district',true); ok=false; } else se('district','err-district',false);
+      if (di === 'other') {
+        if (!v('district-other')) { se('district-other','err-district-other',true); ok=false; } else se('district-other','err-district-other',false);
+      }
+      const fp = document.querySelector('input[name="federalProperty"]:checked');
+      const fpMsg = document.getElementById('err-federal-property');
+      if (!fp) { fpMsg.classList.add('visible'); ok=false; } else fpMsg.classList.remove('visible');
+      if (fp?.value === 'Yes') {
+        if (!v('federal-property-name')) { se('federal-property-name','err-federal-property-name',true); ok=false; } else se('federal-property-name','err-federal-property-name',false);
+      }
+      // Validate no PO box
+      const street = v('addr-street').toLowerCase();
+      if (street.includes('p.o.') || street.includes('po box') || street.includes('p o box')) {
+        se('addr-street','err-addr-street',true);
+        document.getElementById('err-addr-street').textContent = 'P.O. Boxes are not accepted. Please enter a physical street address.';
+        ok = false;
+      }
+    }
+
+    if (step === 2) {
+      ['parent-first','parent-last'].forEach(id => {
+        const valid = !!v(id);
+        se(id, 'err-' + id, !valid);
+        if (!valid) ok = false;
+      });
+      if (!v('relationship')) { se('relationship','err-relationship',true); ok=false; } else se('relationship','err-relationship',false);
+      const email = v('parent-email');
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { se('parent-email','err-parent-email',true); ok=false; } else se('parent-email','err-parent-email',false);
+    }
+
+    if (step === 3) {
+      const ms = document.querySelector('input[name="militaryStatus"]:checked');
+      const msMsg = document.getElementById('err-military-status');
+      if (!ms) { msMsg.classList.add('visible'); ok=false; } else msMsg.classList.remove('visible');
+
+      if (ms?.value === 'Active Duty') {
+        ['active-parent-last','active-parent-first','service-branch','pay-grade','mos'].forEach(id => {
+          const valid = !!v(id);
+          se(id, 'err-' + id, !valid);
+          if (!valid) ok = false;
+        });
+      }
+
+      if (['DoD Civilian Employee','Federal Civilian Employee (non-DoD)'].includes(ms?.value)) {
+        ['civilian-parent-last','civilian-parent-first','federal-agency','work-property-name','work-addr-street','work-addr-city','work-addr-zip'].forEach(id => {
+          const valid = !!v(id);
+          se(id, 'err-' + id, !valid);
+          if (!valid) ok = false;
+        });
+        if (!v('work-addr-state')) { se('work-addr-state','err-work-addr-state',true); ok=false; } else se('work-addr-state','err-work-addr-state',false);
+      }
+
+      if (ms?.value === 'Surviving Dependent') {
+        ['surviving-parent-last','surviving-parent-first','surviving-branch','surviving-grade'].forEach(id => {
+          const valid = !!v(id);
+          se(id, 'err-' + id, !valid);
+          if (!valid) ok = false;
+        });
+      }
+
+      if (ms?.value === 'Foreign Military Officer / Government Official') {
+        ['foreign-parent-last','foreign-parent-first','foreign-rank','foreign-country'].forEach(id => {
+          const valid = !!v(id);
+          se(id, 'err-' + id, !valid);
+          if (!valid) ok = false;
+        });
+      }
+    }
+
+    if (step === 5) {
+      if (!v('signature')) { se('signature','err-signature',true); ok=false; } else se('signature','err-signature',false);
+      if (!v('sig-date'))  { se('sig-date','err-sig-date',true); ok=false; } else se('sig-date','err-sig-date',false);
+      const cons = document.getElementById('consent-confirm');
+      const consMsg = document.getElementById('err-consent');
+      if (!cons.checked) { consMsg.classList.add('visible'); ok=false; } else consMsg.classList.remove('visible');
+    }
+
+    return ok;
+  }
+
+  // ── REVIEW SUMMARY ─────────────────────────────────
+  function buildReview() {
+    const district = v('district') === 'other' ? v('district-other') : v('district');
+    const ms = document.querySelector('input[name="militaryStatus"]:checked')?.value || '';
+    const fp = document.querySelector('input[name="federalProperty"]:checked')?.value || '';
+
+    const rows = [
+      ['Student Name', v('student-first') + ' ' + v('student-last')],
+      ['Date of Birth', v('student-dob')],
+      ['School', v('school-name') + ' — ' + district],
+      ['Grade', v('student-grade') + ' · ' + v('school-year')],
+      ['Survey Date', v('survey-date')],
+      ['Residence', v('addr-street') + (v('addr-unit') ? ', ' + v('addr-unit') : '') + ', ' + v('addr-city') + ', ' + v('addr-state') + ' ' + v('addr-zip')],
+      ['Lives on Federal Property', fp + (fp === 'Yes' && v('federal-property-name') ? ' — ' + v('federal-property-name') : '')],
+      ['Parent / Guardian', v('parent-first') + ' ' + v('parent-last') + ' (' + v('relationship') + ')'],
+      ['Status', ms],
+    ];
+
+    if (ms === 'Active Duty') {
+      rows.push(['Servicemember', v('active-parent-name')]);
+      rows.push(['Branch / Grade / MOS', v('service-branch') + ' · ' + v('pay-grade') + ' · ' + v('mos')]);
+    }
+    if (['DoD Civilian Employee','Federal Civilian Employee (non-DoD)'].includes(ms)) {
+      rows.push(['Employee', v('civilian-parent-first') + ' ' + v('civilian-parent-last')]);
+      rows.push(['Agency', v('federal-agency')]);
+      rows.push(['Work Location', v('work-property-name') + ', ' + v('work-addr-city') + ', ' + v('work-addr-state')]);
+    }
+    if (ms === 'Surviving Dependent') {
+      rows.push(['Servicemember', v('surviving-parent-first') + ' ' + v('surviving-parent-last')]);
+      rows.push(['Branch / Grade', v('surviving-branch') + ' · ' + v('surviving-grade')]);
+    }
+    if (ms === 'Foreign Military Officer / Government Official') {
+      rows.push(['Officer / Official', v('foreign-parent-first') + ' ' + v('foreign-parent-last')]);
+      rows.push(['Rank / Country', v('foreign-rank') + ' · ' + v('foreign-country')]);
+    }
+
+    document.getElementById('review-content').innerHTML = rows
+      .map(([k, val]) => `<div class="rev-row"><div class="rev-key">${k}</div><div class="rev-val">${val || '—'}</div></div>`)
+      .join('');
+  }
+
+  // ── DATE AUTO-FILL ─────────────────────────────────
+  window.addEventListener('DOMContentLoaded', () => {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('sig-date').value = today;
+    document.getElementById('sig-date').max = today;
+    document.getElementById('survey-date').value = today;
+    updateProgress(1);
+  });
+
+  // ── FORM SUBMISSION ────────────────────────────────
+  document.getElementById('survey-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!validateStep(5)) return;
+
+    const submitBtn = document.getElementById('submit-btn');
+    const submitText = document.getElementById('submit-text');
+    const spinner = document.getElementById('submit-spinner');
+    submitBtn.disabled = true;
+    submitText.textContent = 'Submitting…';
+    spinner.classList.add('visible');
+
+    const district = v('district') === 'other' ? v('district-other') : v('district');
+    const ms = document.querySelector('input[name="militaryStatus"]:checked')?.value || '';
+    const fp = document.querySelector('input[name="federalProperty"]:checked')?.value || '';
+
+    const confId = 'IA-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substr(2,4).toUpperCase();
+
+    const payload = {
+      timestamp: new Date().toISOString(),
+      schoolYear: v('school-year'),
+      surveyDate: v('survey-date'),
+      studentFirst: v('student-first'),
+      studentLast: v('student-last'),
+      studentDob: v('student-dob'),
+      studentGrade: v('student-grade'),
+      district: district,
+      schoolName: v('school-name'),
+      addrStreet: v('addr-street'),
+      addrUnit: v('addr-unit'),
+      addrCity: v('addr-city'),
+      addrState: v('addr-state'),
+      addrZip: v('addr-zip'),
+      federalProperty: fp,
+      federalPropertyName: v('federal-property-name'),
+      parentFirst: v('parent-first'),
+      parentLast: v('parent-last'),
+      relationship: v('relationship'),
+      parentEmail: v('parent-email'),
+      parentPhone: v('parent-phone'),
+      militaryStatus: ms,
+      activeParentLast: v('active-parent-last'),
+      activeParentFirst: v('active-parent-first'),
+      serviceBranch: v('service-branch'),
+      payGrade: v('pay-grade'),
+      mos: v('mos'),
+      civilianParentLast: v('civilian-parent-last'),
+      civilianParentFirst: v('civilian-parent-first'),
+      federalAgency: v('federal-agency'),
+      workPropertyName: v('work-property-name'),
+      workAddrStreet: v('work-addr-street'),
+      workAddrUnit: v('work-addr-unit'),
+      workAddrCity: v('work-addr-city'),
+      workAddrState: v('work-addr-state'),
+      workAddrZip: v('work-addr-zip'),
+      survivingParentLast: v('surviving-parent-last'),
+      survivingParentFirst: v('surviving-parent-first'),
+      survivingBranch: v('surviving-branch'),
+      survivingGrade: v('surviving-grade'),
+      foreignParentLast: v('foreign-parent-last'),
+      foreignParentFirst: v('foreign-parent-first'),
+      foreignRank: v('foreign-rank'),
+      foreignCountry: v('foreign-country'),
+      signature: v('signature'),
+      sigDate: v('sig-date'),
+      consentGiven: 'Yes',
+      confirmationId: confId,
+    };
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      document.getElementById('conf-id').textContent = confId;
+      document.getElementById('survey-form').style.display = 'none';
+      document.querySelector('.progress-wrap').style.display = 'none';
+      document.getElementById('success-screen').classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    } catch (err) {
+      submitBtn.disabled = false;
+      submitText.textContent = 'Submit Survey';
+      spinner.classList.remove('visible');
+      alert('There was an error submitting the form. Please try again or contact rdevall@aurorachamber.org.');
+      console.error('Submission error:', err);
+    }
+  });
+</script>
+
+</body>
+</html>
